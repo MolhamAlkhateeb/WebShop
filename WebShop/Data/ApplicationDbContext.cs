@@ -17,6 +17,11 @@ namespace WebShop.Data
 
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }
+

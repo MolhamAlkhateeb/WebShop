@@ -19,7 +19,10 @@ namespace WebShop.Services
 
         public async Task<Product> GetProduct(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"/api/products/{id}");
+            response.EnsureSuccessStatusCode();
+            Product products = await response.Content.ReadAsAsync<Product>();
+            return products;
         }
 
         public async Task<IEnumerable<Product>> GetProducts(SearchCriteria criteria)

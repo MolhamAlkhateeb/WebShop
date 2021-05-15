@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,12 +8,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using VueCliMiddleware;
 using WebShop.Data;
+using WebShop.Models;
 using WebShop.Services;
 using WebShop.Services.Interfaces;
 
@@ -35,6 +39,32 @@ namespace WebShop
                 // options.UseSqlite(
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            //authentication
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+          .AddJwtBearer(options => {
+              var secretKey = Encoding.UTF8.GetBytes(Configuration["JwtConfig:SecretKey"]);
+              options.SaveToken = true;
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuerSigningKey = true,
+                  IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                  ValidateIssuer = false,
+                  ValidateAudience = false,
+                  RequireExpirationTime = false,
+                  ValidateLifetime = true,
+                  ValidAlgorithms = new[] { "HS512" }
+              };
+          });
+            //JWT Config
+            JwtConfig jwtConfig = new();
+            Configuration.GetSection("JwtConfig").Bind(jwtConfig);
+            services.AddSingleton(jwtConfig);
+            //Authentication Service
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -74,6 +104,7 @@ namespace WebShop
 
             app.UseRouting();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

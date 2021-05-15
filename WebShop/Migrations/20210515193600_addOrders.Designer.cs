@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebShop.Data;
 
 namespace WebShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210515193600_addOrders")]
+    partial class addOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,9 +290,6 @@ namespace WebShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DeliverDate")
                         .HasColumnType("datetime2");
 
@@ -300,12 +299,18 @@ namespace WebShop.Migrations
                     b.Property<bool>("PaymentConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(8,2)");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("ShippingAddressId");
 
                     b.HasIndex("UserId");
 
@@ -329,47 +334,13 @@ namespace WebShop.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("WebShop.Models.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Jti")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -426,7 +397,7 @@ namespace WebShop.Migrations
             modelBuilder.Entity("WebShop.Models.Address", b =>
                 {
                     b.HasOne("WebShop.Data.ApplicationUser", "User")
-                        .WithMany("Addresses")
+                        .WithMany("ShippingAddresses")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -441,15 +412,15 @@ namespace WebShop.Migrations
 
             modelBuilder.Entity("WebShop.Models.Order", b =>
                 {
-                    b.HasOne("WebShop.Models.Address", "Address")
+                    b.HasOne("WebShop.Models.Address", "ShippingAddress")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("ShippingAddressId");
 
                     b.HasOne("WebShop.Data.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Address");
+                    b.Navigation("ShippingAddress");
 
                     b.Navigation("User");
                 });
@@ -461,22 +432,11 @@ namespace WebShop.Migrations
                         .HasForeignKey("OrderId");
                 });
 
-            modelBuilder.Entity("WebShop.Models.RefreshToken", b =>
-                {
-                    b.HasOne("WebShop.Data.ApplicationUser", "User")
-                        .WithOne("RefreshToken")
-                        .HasForeignKey("WebShop.Models.RefreshToken", "UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WebShop.Data.ApplicationUser", b =>
                 {
-                    b.Navigation("Addresses");
-
                     b.Navigation("Orders");
 
-                    b.Navigation("RefreshToken");
+                    b.Navigation("ShippingAddresses");
                 });
 
             modelBuilder.Entity("WebShop.Models.Order", b =>

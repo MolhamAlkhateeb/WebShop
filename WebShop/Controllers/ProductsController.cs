@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebShop.Data;
 using WebShop.Models;
+using WebShop.Services.ERPService;
 using WebShop.Services.Interfaces;
 
 namespace WebShop.Controllers
@@ -17,19 +18,23 @@ namespace WebShop.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
+        private readonly IERPService erpService;
 
-        public ProductsController(ApplicationDbContext context, IProductService productService)
+        public ProductsController(ApplicationDbContext context, IProductService productService,IERPService erpService)
         {
             _context = context;
             _productService = productService;
+            this.erpService = erpService;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery]SearchCriteria criteria)
         {
-            IEnumerable<Product> products = await _productService.GetProducts(criteria);
-            return products.ToList();
+            List<Product> products = await erpService.GetProducts(criteria);
+            return Ok(products);
+            //IEnumerable<Product> products = await _productService.GetProducts(criteria);
+            //return products.ToList();
             //return await _context.Products.ToListAsync();
         }
 

@@ -18,6 +18,7 @@ using VueCliMiddleware;
 using WebShop.Data;
 using WebShop.Models;
 using WebShop.Services;
+using WebShop.Services.ERPService;
 using WebShop.Services.Interfaces;
 
 namespace WebShop
@@ -70,9 +71,17 @@ namespace WebShop
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddHttpClient<ERPAuthService>();
+            services.AddTransient<ERPAuthHandler>();
+            services.AddHttpClient<IERPService, ERPService>("ERPServiceClient", c =>
+            {
+                c.BaseAddress = new Uri(Configuration["ERPService:BaseUrl"]);
+            }).AddHttpMessageHandler<ERPAuthHandler>();
+
             services.AddHttpClient<IProductService, ProductService>(c =>
             {
                 c.BaseAddress = new Uri(Configuration["Services:ProductService:BaseUrl"]);
+                
             });
 
 

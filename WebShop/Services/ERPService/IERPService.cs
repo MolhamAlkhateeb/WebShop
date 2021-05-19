@@ -10,5 +10,6 @@ namespace WebShop.Services.ERPService
     {
         Task<List<Product>> GetProducts();
         Task<List<Product>> GetProducts(SearchCriteria criteria);
+        Task<Product> GetProduct(int id);
     }
 }

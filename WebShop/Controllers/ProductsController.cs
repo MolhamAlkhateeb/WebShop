@@ -16,33 +16,27 @@ namespace WebShop.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IProductService _productService;
+        
         private readonly IERPService erpService;
 
-        public ProductsController(ApplicationDbContext context, IProductService productService,IERPService erpService)
+        public ProductsController(IERPService erpService)
         {
-            _context = context;
-            _productService = productService;
             this.erpService = erpService;
         }
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery]SearchCriteria criteria)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] SearchCriteria criteria)
         {
             List<Product> products = await erpService.GetProducts(criteria);
             return Ok(products);
-            //IEnumerable<Product> products = await _productService.GetProducts(criteria);
-            //return products.ToList();
-            //return await _context.Products.ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _productService.GetProduct(id);
+            var product = await erpService.GetProduct(id);
 
             if (product == null)
             {

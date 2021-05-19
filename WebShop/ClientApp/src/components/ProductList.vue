@@ -1,13 +1,4 @@
 <template>
-  <!-- <div id="product-list"> -->
-  <!-- <ProductCard
-      v-for="(product, index) in products"
-      v-bind:key="index"
-      :product="product"
-    />
-  </div>
-  <Button label="TESTTTT" /> -->
-
   <DataView
     :value="products"
     :layout="layout"
@@ -45,11 +36,6 @@
             <div class="product-description">
               {{ slotProps.data.description }}
             </div>
-            <Rating
-              :modelValue="slotProps.data.rating"
-              :readonly="true"
-              :cancel="false"
-            ></Rating>
             <i class="pi pi-tag product-category-icon"></i
             ><span class="product-category">{{ slotProps.data.category }}</span>
           </div>
@@ -60,13 +46,6 @@
               label="Add to Cart"
               :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
             ></Button>
-            <!-- <span
-              :class="
-                'product-badge status-' +
-                slotProps.data.inventoryStatus.toLowerCase()
-              "
-              >{{ slotProps.data.inventoryStatus }}</span
-            > -->
           </div>
         </div>
       </div>
@@ -82,13 +61,6 @@
                 slotProps.data.category
               }}</span>
             </div>
-            <!-- <span
-              :class="
-                'product-badge status-' +
-                slotProps.data.inventoryStatus.toLowerCase()
-              "
-              >{{ slotProps.data.inventoryStatus }}</span
-            > -->
           </div>
           <div class="product-grid-item-content">
             <img
@@ -99,11 +71,6 @@
             <div class="product-description">
               {{ slotProps.data.description }}
             </div>
-            <Rating
-              :modelValue="slotProps.data.rating"
-              :readonly="true"
-              :cancel="false"
-            ></Rating>
           </div>
           <div class="product-grid-item-bottom">
             <span class="product-price">${{ slotProps.data.price }}</span>
@@ -120,7 +87,6 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import axios from "axios";
 import ProductCard from "@/components/ProductCard.vue";
 import ProductService from "../services/ProductService";
 import Product from "../models/Product";
@@ -151,18 +117,13 @@ export default class ProductList extends Vue {
   sortField = null;
   sortOptions: any[] = [
     { label: "Price High to Low", value: "!price" },
-    { label: "Price Low to High", value: "price" },
+    { label: "Price Low to High", value: "price" }
   ];
   created() {
     this.productService = new ProductService();
   }
   async mounted() {
     this.products = await this.productService?.getProducts();
-  }
-
-  async getProducts() {
-    const response = await axios.get("/api/products");
-    return response.data;
   }
 
   onSortChange(event: any) {

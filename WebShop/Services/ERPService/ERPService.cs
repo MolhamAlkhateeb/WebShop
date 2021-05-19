@@ -19,6 +19,7 @@ namespace WebShop.Services.ERPService
 
         public async Task<List<Product>> GetProducts(SearchCriteria criteria)
         {
+            
             var response = await client.GetAsync($"/api/products/{criteria.ToQueryString()}");
             response.EnsureSuccessStatusCode();
             List<Product> products = await response.Content.ReadAsAsync<List<Product>>();
@@ -30,6 +31,14 @@ namespace WebShop.Services.ERPService
             response.EnsureSuccessStatusCode();
             List<Product> products = await response.Content.ReadAsAsync<List<Product>>();
             return products;
+        }
+        
+        public async Task<Product> GetProduct(int id)
+        {
+            var response = await client.GetAsync($"/api/products/{id}");
+            response.EnsureSuccessStatusCode();
+            Product product = await response.Content.ReadAsAsync<Product>();
+            return product;
         }
     }
 }

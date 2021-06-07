@@ -78,13 +78,6 @@ namespace WebShop
                 c.BaseAddress = new Uri(Configuration["ERPService:BaseUrl"]);
             }).AddHttpMessageHandler<ERPAuthHandler>();
 
-            services.AddHttpClient<IProductService, ProductService>(c =>
-            {
-                c.BaseAddress = new Uri(Configuration["Services:ProductService:BaseUrl"]);
-                
-            });
-
-
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -99,7 +92,7 @@ namespace WebShop
             services.AddControllers();
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp";
+                configuration.RootPath = "ClientApp/dist";
             });
         }
 
@@ -126,7 +119,7 @@ namespace WebShop
                 if (env.IsDevelopment())
                     spa.Options.SourcePath = "ClientApp/";
                 else
-                    spa.Options.SourcePath = "dist";
+                    spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {

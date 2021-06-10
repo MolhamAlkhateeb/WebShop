@@ -28,7 +28,7 @@
       <div class="p-col-12">
         <div class="product-list-item">
           <img
-            :src="slotProps.data.images?.find(i => i.isMain)?.url"
+            :src="slotProps.data.images?.find(i => i.isMain)?.url || slotProps.data.images[0]?.url"
             :alt="slotProps.data.name"
           />
           <div class="product-list-detail">
@@ -64,7 +64,7 @@
           </div>
           <div class="product-grid-item-content">
             <img
-              :src="slotProps.data.images[0]?.url"
+              :src="slotProps.data.images?.find(i => i.isMain)?.url || slotProps.data.images[0]?.url"
               :alt="slotProps.data.name"
             />
             <div class="product-name">{{ slotProps.data.name }}</div>

@@ -28,7 +28,10 @@
       <div class="p-col-12">
         <div class="product-list-item">
           <img
-            :src="slotProps.data.images?.find(i => i.isMain)?.url || slotProps.data.images[0]?.url"
+            :src="
+              slotProps.data.images?.find((i) => i.isMain)?.url ||
+              slotProps.data.images[0]?.url
+            "
             :alt="slotProps.data.name"
           />
           <div class="product-list-detail">
@@ -62,9 +65,15 @@
               }}</span>
             </div>
           </div>
-          <div class="product-grid-item-content">
+          <div
+            class="product-grid-item-content"
+            @click="openProductDetails(slotProps.data.id)"
+          >
             <img
-              :src="slotProps.data.images?.find(i => i.isMain)?.url || slotProps.data.images[0]?.url"
+              :src="
+                slotProps.data.images?.find((i) => i.isMain)?.url ||
+                slotProps.data.images[0]?.url
+              "
               :alt="slotProps.data.name"
             />
             <div class="product-name">{{ slotProps.data.name }}</div>
@@ -96,6 +105,7 @@ import Button from "primevue/button";
 import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
 import Rating from "primevue/rating";
 import Galleria from "primevue/galleria";
+import router from "@/router";
 
 @Options({
   components: {
@@ -117,7 +127,7 @@ export default class ProductList extends Vue {
   sortField = null;
   sortOptions: any[] = [
     { label: "Price High to Low", value: "!price" },
-    { label: "Price Low to High", value: "price" }
+    { label: "Price Low to High", value: "price" },
   ];
   created() {
     this.productService = new ProductService();
@@ -139,6 +149,10 @@ export default class ProductList extends Vue {
       this.sortField = value;
       this.sortKey = sortValue;
     }
+  }
+
+  openProductDetails(id: number) {
+    router.push({ name: "ProductDetails", params: { id: id } });
   }
 }
 </script>
@@ -234,6 +248,7 @@ export default class ProductList extends Vue {
 
   .product-grid-item-content {
     text-align: center;
+    cursor: pointer;
   }
 
   .product-price {

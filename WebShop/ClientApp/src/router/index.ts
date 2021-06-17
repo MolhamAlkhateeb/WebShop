@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import ProductDetails from "../views/ProductDetails.vue";
+import ContactUs from "../views/ContactUs.vue";
+import PrivacyAndPolicy from "@/views/PrivacyPolicy.vue";
+import TermsAndConditions from "@/views/TermsAndConditions.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +25,20 @@ const routes: Array<RouteRecordRaw> = [
     name: "ProductDetails",
     component: ProductDetails,
     props: route => ({ id: Number(route.params.id) })
+  },
+  {
+    path: "/contact-us",
+    name: "ContactUs",
+    component: ContactUs
+  }, 
+  {
+    path: "/privacy-and-policy", 
+    name: "PrivacyAndPolicy", 
+    component: PrivacyAndPolicy
+  }, {
+    path: "/terms-and-conditions", 
+    name: "TermsAndConditions", 
+    component: TermsAndConditions
   }
 ];
 

@@ -1,19 +1,19 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <Navbar />
+
   <router-view />
   <Footer />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Footer from "@/components/Footer.vue";
+import Footer from "@/components/Footer/Footer.vue";
+import Navbar from "@/components/NavBar.vue";
 
 @Options({
   components: {
     Footer,
+    Navbar,
   },
 })
 export default class App extends Vue {}

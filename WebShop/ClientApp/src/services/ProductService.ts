@@ -7,4 +7,9 @@ export default class ProductService {
         const response = await axios.get<Array<Product>>('/api/products')
         return response.data
     }
+
+    async getProduct(id: number) {
+        const response = await axios.get<Product>(`/api/products/${id}`)
+        return response.data
+    }
 }

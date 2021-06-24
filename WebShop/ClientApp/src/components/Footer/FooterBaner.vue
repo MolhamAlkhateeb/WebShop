@@ -2,12 +2,14 @@
   <div class="footer-baner">
     <ul class="footer-baner-item">
       <li>
-        <span>© Copyright 2021</span>
+        <span>© 2021</span>
         <router-link to="/"> Dwells AB</router-link>
-        <span> All Rights Reserved.</span>
+        <span>, Box 15, 56121 Huskvarna, Sweden</span>
       </li>
+      <li>&nbsp;&nbsp;&nbsp;Org-nr 5592549587</li>
+      <li>&nbsp;&nbsp;&nbsp;VAT-nr SE559254958701</li>
     </ul>
-    <ul class="footer-baner-item">
+    <ul class="footer-baner-item inline">
       <li>
         <router-link to="/privacy-and-policy">
           <span>Privacy Policy</span>
@@ -34,9 +36,16 @@
 .footer-baner-item {
   list-style: none;
   display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 .footer-baner-item li {
   margin-right: 5px;
+}
+
+.footer-baner-item.inline {
+  display: flex;
+  flex-direction: row;
 }
 
 a {

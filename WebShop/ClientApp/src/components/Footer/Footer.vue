@@ -48,4 +48,9 @@ export default class Footer extends Vue {
   display: flex;
   justify-content: space-around;
 }
+
+.footer {
+  background-color: #025844;
+  color: white;
+}
 </style>

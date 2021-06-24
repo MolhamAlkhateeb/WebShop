@@ -1,6 +1,5 @@
 <template>
   <Navbar />
-
   <router-view />
   <Footer />
 </template>
@@ -20,23 +19,15 @@ export default class App extends Vue {}
 </script>
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+@font-face {
+  font-family: "dwells-medium";
+  src: url("assets/fonts/dwells-medium.woff2") format("woff2");
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

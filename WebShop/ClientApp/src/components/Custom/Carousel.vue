@@ -89,7 +89,8 @@ export default class Carousel extends Vue {
   display: flex;
   flex-direction: row;
   padding: 0.5em;
-  overflow: auto;
+  overflow-x: auto;
+  justify-content: space-between;
 }
 
 .thumbnail {
@@ -97,6 +98,11 @@ export default class Carousel extends Vue {
   height: 100%;
   display: inline-block;
   cursor: pointer;
+  padding: 0.125em;
+}
+
+.thumbnail img:hover {
+  opacity: 0.5;
 }
 
 .thumbnail:not(:last-child) {

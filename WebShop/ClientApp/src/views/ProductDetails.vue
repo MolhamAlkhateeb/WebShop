@@ -2,10 +2,7 @@
   <div v-if="product">
     <div class="container">
       <div class="product-showcase">
-        <Carousel
-          :images="product.images"
-          :count="Number(5)"
-        />
+        <Carousel :images="product.images" :count="Number(5)" />
       </div>
       <div class="product-info">
         <div class="row">
@@ -93,13 +90,12 @@ export default class ProductDetails extends Vue {
 }
 
 .product-showcase {
-  flex: 0 0 60%;
-  max-width: 100%;
+  width: 60%;
 }
 
 .product-info {
-  flex: 0 0 40%;
   text-align: left;
+  width: 40%;
 }
 
 .product-name {
@@ -118,6 +114,13 @@ export default class ProductDetails extends Vue {
 @media only screen and (max-width: 990px) {
   .container {
     flex-direction: column;
+  }
+  .product-showcase {
+    width: 100%;
+  }
+
+  .product-info {
+    width: 100%;
   }
 }
 </style>

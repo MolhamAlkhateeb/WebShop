@@ -4,8 +4,8 @@
       <img src="@/assets/logo_white.png" />
     </div>
     <div class="menu-items">
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
+      <MenuItem to="/" text="Home"/>
+      <MenuItem to="/about" text="About"/>
     </div>
     <div class="login-container">
       <Login />
@@ -16,12 +16,14 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import Login from "@/components/Login.vue";
+import MenuItem from "@/components/Navbar/MenuItem.vue";
 
 @Options({
   props: {
     title: String,
   },
   components: {
+    MenuItem,
     Login,
   },
 })
@@ -36,9 +38,6 @@ export default class Navbar extends Vue {}
   position: relative;
 }
 
-#nav a {
-  color: #fff;
-}
 
 .menu-items {
   flex-grow: 1;
@@ -51,19 +50,10 @@ export default class Navbar extends Vue {}
   top: 0;
 }
 
-.logo img{
+.logo img {
   height: 100%;
   width: auto;
 }
-.menu-items a.router-link-exact-active {
-  /* color: #42b983; */
-  text-decoration: none;
-  border-bottom: 3px solid white;
-  padding-bottom: 5px;
-  border-color: #50e3c2;
-  margin-right: 1rem;
-}
 
-.login-container {
-}
+
 </style>

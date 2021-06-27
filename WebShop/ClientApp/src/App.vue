@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Footer from "@/components/Footer/Footer.vue";
-import Navbar from "@/components/NavBar.vue";
+import Navbar from "@/components/Navbar/NavBar.vue";
 
 @Options({
   components: {

@@ -1,51 +1,27 @@
 <template>
   <div class="container">
-    <div class="main-image-container">
-      <div class="nav-btn prev">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          style="transform: scale(-1, 1)"
-        >
-          <path
-            d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"
-          />
-        </svg>
-      </div>
-
-      <div class="main-image">
-        <img :src="mainImage" />
-      </div>
-      <div class="nav-btn next">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"
-          />
-        </svg>
-      </div>
+    <div class="main-image" v-touch:swipe="swipeHandler">
+      <img :src="mainImage.url" />
     </div>
-    <div class="thumbnails-container">
-      <!-- <img
-        v-for="(image, index) of images.slice(0, count)"
+    <div class="thumbnails">
+      <div
+        v-for="(image, index) of images"
         :key="index"
-        :src="image"
-      /> -->
+        class="thumbnail"
+        @click="selectImage(image)"
+      >
+        <img :src="image.url" />
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
+import Image from "@/models/Image";
 import { Vue, Options } from "vue-class-component";
 
 @Options({
   props: {
-    images: Array as () => Array<string>,
+    images: Array as () => Array<Image>,
     count: {
       type: Number,
       default: (props: any) => props.images.length,
@@ -59,53 +35,104 @@ export default class Carousel extends Vue {
   mounted() {
     this.mainImage = this.images[0];
   }
+
+  selectImage(image: string) {
+    this.mainImage = image;
+  }
+
+  swipeHandler(direction: any, event: any) {
+    if (direction == "right") {
+      this.selectNext();
+    }
+    if (direction == "left") {
+      this.selectPrev();
+    }
+  }
+
+  selectPrev() {
+    const currentIndex = this.images.indexOf(this.mainImage);
+    const index =
+      currentIndex - 1 <= 0 ? this.images.length - 1 : currentIndex - 1;
+    this.mainImage = this.images[index];
+  }
+
+  selectNext() {
+    const currentIndex = this.images.indexOf(this.mainImage);
+    const index = currentIndex + 1 >= this.images.length ? 0 : currentIndex + 1;
+    this.mainImage = this.images[index];
+  }
 }
 </script>
 <style scoped>
 .container {
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  height: 100%;
-}
-.main-image-container {
-  width: 100%;
-  padding-top: 100%; /* 1:1 Aspect Ratio */
-  position: relative;
+  height: 50vh;
 }
 .main-image {
   width: 100%;
-  position: absolute;
-  top: 0;
-}
-.main-image img {
-  width: 100%;
-}
-.thumbnails-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  height: 20%;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.9);
-}
-.thumbnails-container img {
-  height: 100%;
-}
-.next {
-  margin-left: auto;
+  height: 85%;
 }
 
-.nav-btn {
-  z-index: 2;
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
+}
+
+.thumbnails {
+  width: 100%;
+  height: 15%;
+  background-color: #000;
   display: flex;
-  align-items: center;
-  position: absolute;
-  top: calc(50% - 12px);
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0.5em;
+  overflow: auto;
 }
-.nav-btn.prev {
-  left: 0;
+
+.thumbnail {
+  border: 1px solid grey;
+  height: 100%;
+  display: inline-block;
+  cursor: pointer;
 }
-.nav-btn.next {
-  right: 0;
+
+.thumbnail:not(:last-child) {
+  margin-right: 1em;
+}
+
+.thumbnail img {
+  height: 100%;
 }
 </style>
+
+
+
+      // <div class="nav-btn next">
+      //   <svg
+      //     xmlns="http://www.w3.org/2000/svg"
+      //     width="24"
+      //     height="24"
+      //     viewBox="0 0 24 24"
+      //   >
+      //     <path
+      //       d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"
+      //     />
+      //   </svg>
+      // </div>
+      //       <div class="nav-btn prev">
+      //   <svg
+      //     xmlns="http://www.w3.org/2000/svg"
+      //     width="24"
+      //     height="24"
+      //     viewBox="0 0 24 24"
+      //     style="transform: scale(-1, 1)"
+      //   >
+      //     <path
+      //       d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"
+      //     />
+      //   </svg>
+      // </div>

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="product-showcase">
         <Carousel
-          :images="product.images.map((i) => i.url)"
+          :images="product.images"
           :count="Number(5)"
         />
       </div>
@@ -32,6 +32,7 @@ import { Options, Vue } from "vue-class-component";
 import Galleria from "primevue/galleria";
 import Button from "primevue/button";
 import Carousel from "@/components/Custom/Carousel.vue";
+import Product from "@/models/Product";
 
 @Options({
   props: {
@@ -44,7 +45,7 @@ import Carousel from "@/components/Custom/Carousel.vue";
   },
 })
 export default class ProductDetails extends Vue {
-  product?: any = null;
+  product: Product | null = null;
   id = 0;
   responsiveOptions = [
     {
@@ -72,14 +73,10 @@ export default class ProductDetails extends Vue {
   ];
   async mounted() {
     this.product = await this.getProduct();
-    const g = new Array<any>();
-    g.push(this.product.images[0]);
-    g.push(this.product.images[0]);
-    g.push(this.product.images[0]);
-    g.push(this.product.images[0]);
-    g.push(this.product.images[0]);
-    g.push(this.product.images[0]);
-    this.product.images = g;
+    if (this.product)
+      this.product.images = this.product?.images?.sort(
+        (a, b) => (a.position || 0) - (b.position || 0)
+      );
   }
 
   async getProduct() {
@@ -92,20 +89,17 @@ export default class ProductDetails extends Vue {
 <style scoped>
 .container {
   display: flex;
-  margin: 0 1.5rem;
+  max-width: 100%;
 }
 
 .product-showcase {
   flex: 0 0 60%;
+  max-width: 100%;
 }
 
 .product-info {
   flex: 0 0 40%;
   text-align: left;
-}
-
-.p-galleria-thumbnail-items-container {
-  height: 100%;
 }
 
 .product-name {
@@ -119,5 +113,11 @@ export default class ProductDetails extends Vue {
 }
 .row *:not(:first-child) {
   margin-left: 1.5rem;
+}
+
+@media only screen and (max-width: 990px) {
+  .container {
+    flex-direction: column;
+  }
 }
 </style>

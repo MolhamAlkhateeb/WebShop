@@ -42,7 +42,7 @@
       <template #footer>
         <div class="dialog-footer">
           <div class="btn" @click="showDialog = false">Cancel</div>
-          <div class="btn">Login</div>
+          <div class="btn" @click="Login">Login</div>
         </div>
       </template>
     </Dialog>
@@ -55,14 +55,15 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
+import AuthService from "@/services/AuthenticationService";
 
 @Options({
   components: {
     Dialog,
     Button,
     InputText,
-    Password,
-  },
+    Password
+  }
 })
 export default class Login extends Vue {
   showDialog = false;
@@ -71,6 +72,9 @@ export default class Login extends Vue {
 
   onLogInClick() {
     this.showDialog = true;
+  }
+  Login() {
+    AuthService.Login({ Username: this.username, Password: this.password });
   }
 }
 </script>

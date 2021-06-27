@@ -88,7 +88,6 @@ export default class Carousel extends Vue {
   background-color: #000;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
   padding: 0.5em;
   overflow: auto;
 }

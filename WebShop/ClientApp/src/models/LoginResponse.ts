@@ -1,7 +1,9 @@
+import TokenWithRefresh from "@/models/TokensWithRefresh";
+
 interface LoginResponse {
-    accessToken: string;
-    refreshToken: string;
-  }
-  
-  export default LoginResponse;
-  
+  firstname: string;
+  lastname: string;
+  email: string;
+  tokens: TokenWithRefresh;
+}
+export default LoginResponse;

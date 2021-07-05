@@ -4,6 +4,7 @@ import ProductDetails from "../views/ProductDetails.vue";
 import ContactUs from "../views/ContactUs.vue";
 import PrivacyAndPolicy from "@/views/PrivacyPolicy.vue";
 import TermsAndConditions from "@/views/TermsAndConditions.vue";
+import Register from "@/views/Register.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,15 +31,21 @@ const routes: Array<RouteRecordRaw> = [
     path: "/contact-us",
     name: "ContactUs",
     component: ContactUs
-  }, 
+  },
   {
-    path: "/privacy-and-policy", 
-    name: "PrivacyAndPolicy", 
+    path: "/privacy-and-policy",
+    name: "PrivacyAndPolicy",
     component: PrivacyAndPolicy
-  }, {
-    path: "/terms-and-conditions", 
-    name: "TermsAndConditions", 
+  },
+  {
+    path: "/terms-and-conditions",
+    name: "TermsAndConditions",
     component: TermsAndConditions
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
   }
 ];
 

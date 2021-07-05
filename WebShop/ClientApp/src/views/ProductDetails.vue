@@ -11,7 +11,12 @@
         <div class="row">
           <div class="product-description">{{ product.description }}</div>
         </div>
-
+        <div>
+          <div v-for="(price, index) of product.prices" :key="index">
+            <div>{{price.minQuantity}} - {{price.maxQuantity}}</div>
+            <h4>{{price.price}} {{ price.currency}}</h4>
+          </div>
+        </div>
         <div class="row">
           <Button>Add To Cart</Button>
           <Button>Order Sample</Button>

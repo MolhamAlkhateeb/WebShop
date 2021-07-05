@@ -18,7 +18,7 @@ namespace WebShop.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IAuthenticationService authService;
 
-        public RegisterController(UserManager<ApplicationUser> userManager,IAuthenticationService authService)
+        public RegisterController(UserManager<ApplicationUser> userManager, IAuthenticationService authService)
         {
             this.userManager = userManager;
             this.authService = authService;
@@ -31,11 +31,21 @@ namespace WebShop.Controllers
             {
                 return BadRequest();
             }
-            var user = new ApplicationUser { 
-                Email = registerDto.Email ,
-                UserName = registerDto.Email
+            var user = new ApplicationUser
+            {
+                Email = registerDto.Email,
+                UserName = registerDto.Email,
+                Firstname = registerDto.Firstname,
+                Lastname = registerDto.Lastname
             };
-            var created = await userManager.CreateAsync(user,registerDto.Password);
+
+            var userExists = await userManager.FindByEmailAsync(registerDto.Email);
+            if (userExists != null)
+            {
+                return Conflict();
+            }
+
+            var created = await userManager.CreateAsync(user, registerDto.Password);
             if (!created.Succeeded)
             {
                 return BadRequest();

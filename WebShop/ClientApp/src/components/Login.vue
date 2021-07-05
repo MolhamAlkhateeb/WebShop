@@ -1,7 +1,7 @@
 <template>
-  <div class="login-container">
+  <div v-if="!isSignedIn" class="login-container">
     <div class="btn" @click="onLogInClick">Log in</div>
-    <div class="btn">Sing up</div>
+    <router-link class="btn" to="/register">Sing up</router-link>
     <!-- <router-link to="/">Log in</router-link>
     <router-link to="/">Sign up</router-link> -->
 
@@ -20,11 +20,11 @@
         <span class="p-float-label">
           <InputText
             class="full-width"
-            id="username"
+            id="email"
             type="text"
-            v-model="username"
+            v-model="email"
           />
-          <label for="username">Username</label>
+          <label for="email">Email</label>
         </span>
         <h5></h5>
         <span class="p-float-label full-width">
@@ -47,6 +47,13 @@
       </template>
     </Dialog>
   </div>
+
+  <div v-if="isSignedIn" class="login-container">
+    <div class="username-tag">
+      <span>Hello {{ firstname }} {{ lastname }}</span>
+    </div>
+    <div class="btn" @click="onLogOutClick">Log Out</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -62,19 +69,39 @@ import AuthService from "@/services/AuthenticationService";
     Dialog,
     Button,
     InputText,
-    Password
-  }
+    Password,
+  },
 })
 export default class Login extends Vue {
   showDialog = false;
-  username = "";
+  email = "";
   password = "";
+  isSignedIn = false;
+  firstname = "";
+  lastname = "";
+
+  async mounted() {
+    this.isSignedIn = AuthService.isSignedIn();
+  }
 
   onLogInClick() {
     this.showDialog = true;
   }
-  Login() {
-    AuthService.Login({ Username: this.username, Password: this.password });
+  async Login() {
+    const loginResponse = await AuthService.Login({
+      Password: this.password,
+      Email: this.email,
+    });
+    if (loginResponse) {
+      this.isSignedIn = true;
+      this.firstname = loginResponse.firstname;
+      this.lastname = loginResponse.lastname;
+    }
+  }
+
+  async onLogOutClick() {
+    AuthService.logout();
+    this.isSignedIn = false;
   }
 }
 </script>
@@ -108,8 +135,6 @@ export default class Login extends Vue {
   width: 100%;
 }
 
-.dialog-body {
-}
 .dialog-footer {
   width: 100%;
   display: flex;
@@ -119,5 +144,14 @@ export default class Login extends Vue {
 .dialog-footer .btn {
   border-color: #025844;
   color: #025844;
+}
+
+.username-tag {
+  color: #fff;
+  display: inline-block;
+}
+.username-tag span {
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>

@@ -21,8 +21,8 @@ namespace WebShop.Models
         public Address Address { get; set; }
         public bool PaymentConfirmed { get; set; } = false;
 
-        [Column(TypeName = "decimal(8, 2)")]
-        public decimal TotalPrice => Products.Sum(product => product.Price);
+        //[Column(TypeName = "decimal(8, 2)")]
+        //public decimal TotalPrice => Products.Sum(product => product.Price);
 
         public ApplicationUser User { get; set; }
         public string UserId { get; set; }

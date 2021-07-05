@@ -12,8 +12,6 @@ namespace WebShop.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<Image> Images { get; set; }
-
-        [Column(TypeName = "decimal(8, 2)")]
-        public decimal Price { get; set; }
+        public ICollection<PriceQuote> Prices { get; set; }
     }
 }

@@ -43,7 +43,7 @@
             ><span class="product-category">{{ slotProps.data.category }}</span>
           </div>
           <div class="product-list-action">
-            <span class="product-price">${{ slotProps.data.price }}</span>
+            <span class="product-price">${{ slotProps.data.prices }}</span>
             <Button
               icon="pi pi-shopping-cart"
               label="Add to Cart"
@@ -82,7 +82,9 @@
             </div>
           </div>
           <div class="product-grid-item-bottom">
-            <span class="product-price">${{ slotProps.data.price }}</span>
+            <span class="product-price"
+              >${{ getLowestPrice(slotProps.data.prices) }}</span
+            >
             <Button
               icon="pi pi-shopping-cart"
               :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
@@ -106,6 +108,7 @@ import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
 import Rating from "primevue/rating";
 import Galleria from "primevue/galleria";
 import router from "@/router";
+import PriceQuote from "@/models/PriceQuote";
 
 @Options({
   components: {
@@ -153,6 +156,15 @@ export default class ProductList extends Vue {
 
   openProductDetails(id: number) {
     router.push({ name: "ProductDetails", params: { id: id } });
+  }
+
+  getLowestPrice(prices: PriceQuote[]) {
+    if (prices && prices.length > 0) {
+      const price = Math.min(...prices.map((p) => p.price || 0));
+      return price;
+    } else {
+      return 0;
+    }
   }
 }
 </script>

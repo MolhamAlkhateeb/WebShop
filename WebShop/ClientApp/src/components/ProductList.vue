@@ -18,42 +18,8 @@
             @change="onSortChange($event)"
           />
         </div>
-        <div class="p-col-6" style="text-align: right">
-          <DataViewLayoutOptions v-model="layout" />
-        </div>
       </div>
     </template>
-
-    <template #list="slotProps">
-      <div class="p-col-12">
-        <div class="product-list-item">
-          <img
-            :src="
-              slotProps.data.images?.find((i) => i.isMain)?.url ||
-              slotProps.data.images[0]?.url
-            "
-            :alt="slotProps.data.name"
-          />
-          <div class="product-list-detail">
-            <div class="product-name">{{ slotProps.data.name }}</div>
-            <div class="product-description">
-              {{ slotProps.data.description }}
-            </div>
-            <i class="pi pi-tag product-category-icon"></i
-            ><span class="product-category">{{ slotProps.data.category }}</span>
-          </div>
-          <div class="product-list-action">
-            <span class="product-price">${{ slotProps.data.prices }}</span>
-            <Button
-              icon="pi pi-shopping-cart"
-              label="Add to Cart"
-              :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
-            ></Button>
-          </div>
-        </div>
-      </div>
-    </template>
-
     <template #grid="slotProps">
       <div class="p-col-12 p-md-3">
         <div class="product-grid-item card">
@@ -182,6 +148,11 @@ export default class ProductList extends Vue {
 
 .product-description {
   margin: 0 0 1rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
 }
 
 .product-category-icon {
@@ -234,7 +205,6 @@ export default class ProductList extends Vue {
 ::v-deep(.product-grid-item) {
   margin: 0.5rem;
   border: 1px solid #dee2e6;
-
   background: var(--surface-e);
   padding: 2rem;
   -webkit-box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%),

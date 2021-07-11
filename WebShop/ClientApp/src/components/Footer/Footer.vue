@@ -1,12 +1,37 @@
 <template>
-  <div class="footer">
-    <div class="footer-items-container">
-      <FooterItem title="ORDERS & SUPPORT" :items="ordersAndSupport" />
-      <FooterItem title="ABOUT" :items="about" />
-      <FooterItem title="FOLLOW US" :items="followUs" />
+  <div class="p-grid footer">
+    <div class="p-grid p-col-12 p-justify-around footer-grid">
+      <div class="p-col-12 p-xl-2">
+        <FooterItem title="ORDERS & SUPPORT" :items="ordersAndSupport" />
+      </div>
+      <div class="p-col-12 p-xl-2">
+        <FooterItem title="ABOUT" :items="about" />
+      </div>
+      <div class="p-col-12 p-xl-2">
+        <FooterItem title="FOLLOW US" :items="followUs" />
+      </div>
     </div>
 
-    <FooterBaner />
+    <div class="footer-accordion p-col-12">
+      <Accordion :multiple="true">
+        <AccordionTab header="ORDERS & SUPPORT">
+          <FooterItem title="" :items="ordersAndSupport" />
+        </AccordionTab>
+        <AccordionTab>
+          <template #header>
+            <span>ABOUT</span>
+          </template>
+          <FooterItem title="" :items="about" />
+        </AccordionTab>
+        <AccordionTab header="FOLLOW US">
+          <FooterItem title="" :items="followUs" />
+        </AccordionTab>
+      </Accordion>
+    </div>
+
+    <div class="p-col-12">
+      <FooterBaner />
+    </div>
   </div>
 </template>
 
@@ -15,11 +40,15 @@
 import { Vue, Options } from "vue-class-component";
 import FooterBaner from "@/components/Footer/FooterBaner.vue";
 import FooterItem from "@/components/Footer/FooterItem.vue";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 
 @Options({
   components: {
     FooterBaner,
     FooterItem,
+    Accordion,
+    AccordionTab,
   },
 })
 export default class Footer extends Vue {
@@ -43,14 +72,29 @@ export default class Footer extends Vue {
 }
 </script>
 
-<style scoped>
-.footer-items-container {
-  display: flex;
-  justify-content: space-around;
+<style lang="scss" scoped>
+.footer {
+  background-color: var(--var-main-color);
+  color: var(--var-secondary-color);
 }
 
-.footer {
-  background-color: #025844;
-  color: white;
+.footer-grid {
+  display: none;
+}
+
+::v-deep(.footer-accordion) {
+  .p-accordion-header-link {
+    background-color: var(--var-main-color);
+  }
+}
+
+@media (min-width: 1025px) {
+  .footer-accordion {
+    display: none;
+  }
+
+  .footer-grid {
+    display: flex;
+  }
 }
 </style>

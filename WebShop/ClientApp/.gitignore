@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+# Typescript build files
+**/src/**/*.js
+**/src/**/*.map
 
 # local env files
 .env.local

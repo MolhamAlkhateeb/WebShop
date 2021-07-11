@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,8 @@ using WebShop.Models;
 using WebShop.Services;
 using WebShop.Services.ERPService;
 using WebShop.Services.Interfaces;
+using WebShop.Services.MailService;
+using WebShop.Services.ViewRenderService;
 
 namespace WebShop
 {
@@ -35,18 +39,34 @@ namespace WebShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
+            services.AddRazorPages();
+
+            services.Configure<RazorPagesOptions>(options => options.RootDirectory = "/");
+            services.Configure<RazorViewEngineOptions>(o =>
+            {
+                o.ViewLocationFormats.Clear();
+                o.ViewLocationFormats.Add("/");
+            });
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                // options.UseSqlite(
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+
+
             //authentication
-            services.AddAuthentication(options => {
+            services.AddAuthentication(options =>
+            {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-          .AddJwtBearer(options => {
+          .AddJwtBearer(options =>
+          {
               var secretKey = Encoding.UTF8.GetBytes(Configuration["JwtConfig:SecretKey"]);
               options.SaveToken = true;
               options.TokenValidationParameters = new TokenValidationParameters

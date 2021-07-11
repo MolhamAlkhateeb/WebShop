@@ -21,7 +21,7 @@ export default class MenuItem extends Vue {
 
 <style scoped>
 .menu-item {
-  color: #fff;
+  color: var(--var-secondary-color);
   display: inline-block;
   cursor: pointer;
   text-decoration: none;
@@ -42,10 +42,10 @@ export default class MenuItem extends Vue {
   height: 0.125em;
   width: 100%;
   transform: scaleX(0);
-  background: #fff;
+  background: var(--var-secondary-color);
   pointer-events: none;
   transition: transform 0.3s ease-in-out;
-  background-color: #fff;
+  background-color: var(--var-secondary-color);
 }
 
 .menu-item:hover:before {

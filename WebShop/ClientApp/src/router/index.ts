@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
-import ProductDetails from "../views/ProductDetails.vue";
+import ProductDetails from "../views/ProductDetails/ProductDetails.vue";
 import ContactUs from "../views/ContactUs.vue";
 import PrivacyAndPolicy from "@/views/PrivacyPolicy.vue";
 import TermsAndConditions from "@/views/TermsAndConditions.vue";

@@ -165,7 +165,6 @@ export default class Registration extends Vue {
         if (error.response.data.status == 409) {
           this.errorMsg = "User laready exists";
         }
-        console.log(error.response);
       }
       //   if(isSuccess){
       //       await AuthService.Login()
@@ -236,21 +235,5 @@ export default class Registration extends Vue {
 }
 .flex {
   display: flex;
-}
-.btn {
-  text-decoration: none;
-  cursor: pointer;
-  background-color: #025844;
-  color: #fff;
-  border: 0.125em solid #025844;
-  padding: 0.25em 1em;
-  border-radius: 0.25em;
-  transition: color 0.1s linear, border-color 0.2s linear;
-}
-
-.btn:hover {
-  color: #025844;
-  border-color: #025844;
-  background-color: #fff;
 }
 </style>

@@ -1,36 +1,42 @@
 <template>
-  <div class="footer-baner">
-    <ul class="footer-baner-item">
-      <li>
+  <div class="p-grid p-col-12">
+    <div class="p-grid p-col-12 p-justify-center">
+      <div class="block-inline">
         <span>© 2021</span>
-        <router-link to="/"> Dwells AB</router-link>
-        <span>, Box 15, 56121 Huskvarna, Sweden</span>
-      </li>
-      <li>&nbsp;&nbsp;&nbsp;Org-nr 5592549587</li>
-      <li>&nbsp;&nbsp;&nbsp;VAT-nr SE559254958701</li>
-    </ul>
-    <ul class="footer-baner-item inline">
-      <li>
-        <router-link to="/privacy-and-policy">
-          <span>Privacy Policy</span>
+        <router-link to="/"> Dwells AB &nbsp;</router-link>
+      </div>
+      <div class="block-inline">Box 15, 56121 Huskvarna, Sweden &nbsp;</div>
+      <div class="block-inline">Organization Number 559254-9587</div>
+    </div>
+    <div class="p-grid p-col-12 p-justify-center">
+      <div class="hover-reverse">
+        <router-link to="/privacy-and-policy" target="_blank">
+          <small>
+            Privacy Policy
+            <i class="pi pi-external-link hover-reverse font-size-1-em"></i
+            >&nbsp;
+          </small>
         </router-link>
-      </li>
-      <li>
-        <router-link to="/terms-and-conditions">
-          <span>Terms & Conditions</span>
+      </div>
+      <div class="hover-reverse">
+        <router-link to="/terms-and-conditions" target="_blank">
+          <small>
+            Terms & Conditions
+            <i class="pi pi-external-link font-size-1-em"></i>&nbsp;
+          </small>
         </router-link>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .footer-baner {
   border-top: 1px solid #bdbdbd;
-  padding: 18px 0;
+  /* padding: 18px 0;
   display: flex;
   justify-content: space-between;
-  padding-inline-end: 40px;
+  padding-inline-end: 40px; */
 }
 
 .footer-baner-item {

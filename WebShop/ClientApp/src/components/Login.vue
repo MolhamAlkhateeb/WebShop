@@ -1,7 +1,7 @@
 <template>
   <div v-if="!isSignedIn" class="login-container">
-    <div class="btn" @click="onLogInClick">Log in</div>
-    <router-link class="btn" to="/register">Sing up</router-link>
+    <div class="btn-reverse" @click="onLogInClick">Log in</div>
+    <router-link class="btn-reverse" to="/register">Sing up</router-link>
     <!-- <router-link to="/">Log in</router-link>
     <router-link to="/">Sign up</router-link> -->
 
@@ -52,7 +52,7 @@
     <div class="username-tag">
       <span>Hello {{ firstname }} {{ lastname }}</span>
     </div>
-    <div class="btn" @click="onLogOutClick">Log Out</div>
+    <div class="btn-reverse" @click="onLogOutClick">Log Out</div>
   </div>
 </template>
 
@@ -115,21 +115,6 @@ export default class Login extends Vue {
   margin-right: 1em;
 }
 
-.btn {
-  text-decoration: none;
-  cursor: pointer;
-  color: #fff;
-  border: 0.125em solid #fff;
-  padding: 0.25em 1em;
-  border-radius: 0.25em;
-  transition: color 0.1s linear, border-color 0.2s linear;
-}
-
-.btn:hover {
-  color: #000;
-  border-color: #000;
-}
-
 .full-width,
 .full-width > * {
   width: 100%;
@@ -142,12 +127,12 @@ export default class Login extends Vue {
 }
 
 .dialog-footer .btn {
-  border-color: #025844;
-  color: #025844;
+  border-color: var(--var-main-color);
+  color: var(--var-main-color);
 }
 
 .username-tag {
-  color: #fff;
+  color: var(--var-secondary-color);
   display: inline-block;
 }
 .username-tag span {

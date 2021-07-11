@@ -85,7 +85,7 @@ export default class Carousel extends Vue {
 .thumbnails {
   width: 100%;
   height: 15%;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
   padding: 0.5em;
@@ -94,7 +94,7 @@ export default class Carousel extends Vue {
 }
 
 .thumbnail {
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
   height: 100%;
   display: inline-block;
   cursor: pointer;

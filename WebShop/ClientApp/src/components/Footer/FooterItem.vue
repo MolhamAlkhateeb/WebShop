@@ -28,7 +28,7 @@ ul {
   text-align: left;
 }
 .title {
-  color: white;
+  color: var(--var-secondary-color);
   font-size: 20px;
   font-weight: bold;
 }

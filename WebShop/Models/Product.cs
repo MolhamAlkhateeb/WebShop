@@ -12,6 +12,9 @@ namespace WebShop.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<Image> Images { get; set; }
-        public ICollection<PriceQuote> Prices { get; set; }
+        public IEnumerable<PriceQuote> Prices { get; set; }
+        public string ItemNumber { get; set; }
+
+        public IEnumerable<ProductSpecification> Specifications { get; set; }
     }
 }

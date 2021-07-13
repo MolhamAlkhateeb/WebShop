@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
 
 // CSS 
 import "primevue/resources/themes/saga-blue/theme.css"       //theme
@@ -15,5 +16,6 @@ createApp(App)
   .use(store)
   .use(router)
   .use(PrimeVue)
+  .use(ToastService)
   .use(Vue3TouchEvents)
   .mount("#app");

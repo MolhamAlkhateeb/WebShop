@@ -1,6 +1,10 @@
 <template>
   <Navbar />
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="slide" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
   <Footer />
 </template>
 
@@ -34,6 +38,7 @@ export default class App extends Vue {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  overflow: hidden;
 }
 body {
   margin-top: calc(
@@ -69,6 +74,7 @@ body {
   border: 0.125em solid var(--var-main-color);
   padding: 0.25em 1em;
   border-radius: 0.25em;
+  text-align: center;
   transition: color 0.1s linear, border-color 0.2s linear,
     background-color 0.2s linear;
 }
@@ -92,6 +98,41 @@ body {
 .btn-reverse:hover {
   color: #000;
   border-color: #000;
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(2em);
+}
+
+.slide-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-2em);
+}
+.slide-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.pop-leave-to,
+.pop-enter-from {
+  opacity: 0;
+  max-height: 50vh;
+  transform: scale(50%);
+}
+
+.pop-leave-active {
+  transition: all 0.2s ease;
+}
+.pop-enter-active {
+  transition: all 0.2s ease;
 }
 
 @font-face {

@@ -2,7 +2,11 @@
   <div v-if="product" class="p-grid">
     <div class="p-grid p-col-12">
       <div class="p-col-12 p-xl-6">
-        <Carousel :images="product.images" :count="Number(5)" />
+        <Carousel
+          v-if="product.images"
+          :images="product.images"
+          :count="Number(5)"
+        />
       </div>
       <div class="p-col-12 p-xl-6">
         <div class="row">
@@ -46,7 +50,9 @@
       :productId="product.id"
     />
   </div>
-  <div v-else>...Loading</div>
+  <div v-else class="spinner-container">
+    <Spinner />
+  </div>
 </template>
 
 
@@ -63,6 +69,7 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Textarea from "primevue/textarea";
+import Spinner from "primevue/progressspinner";
 import QuoteDialog from "@/views/ProductDetails/QuoteDialog.vue";
 
 @Options({
@@ -80,12 +87,17 @@ import QuoteDialog from "@/views/ProductDetails/QuoteDialog.vue";
     InputNumber,
     Textarea,
     QuoteDialog,
+    Spinner,
   },
 })
 export default class ProductDetails extends Vue {
   product: Product | null = null;
   showGetQuoteDialog = false;
   id = 0;
+
+  created() {
+    // this.product = new Product();
+  }
   async mounted() {
     this.product = await this.getProduct();
     if (this.product)
@@ -160,6 +172,14 @@ export default class ProductDetails extends Vue {
 }
 .specs-table tr td:nth-child(1) {
   font-weight: 700;
+}
+
+.spinner-container {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: rgba(0, 0, 0, 0.4); */
 }
 
 @media only screen and (max-width: 990px) {

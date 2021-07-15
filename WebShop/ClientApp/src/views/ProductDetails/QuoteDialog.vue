@@ -8,73 +8,106 @@
     :style="{ width: '30vw' }"
   >
     <template #header>
-      <h3>Get a Quote</h3>
+      <div>
+        <h3>Get a Quote</h3>
+      </div>
     </template>
-    <h5></h5>
-    <div class="p-fluid">
-      <div class="p-field p-mb-4">
+    <div class="p-grid p-fluid p-justify-center p-col-12">
+      <div class="p-field p-col-12 p-md-12" :class="shakeClass('firstname')">
         <span class="p-float-label">
-          <InputText id="quote-firstname" v-model="quote.firstname" />
-          <label for="quote-firstname">Firstname</label>
+          <InputText
+            id="firstname"
+            v-model="quote.firstname"
+            :class="invalidClass('firstname')"
+          />
+          <label for="firstname">Firstname</label>
         </span>
-        <small v-if="submitted" class="p-error">{{
-          validationProvider.errorsFor("firstname")[0]
-        }}</small>
+        <small class="p-error">{{ errorFor("firstname") }}</small>
+      </div>
+      <div class="p-field p-col-12 p-md-12" :class="shakeClass('lastname')">
+        <span class="p-float-label">
+          <InputText
+            id="lastname"
+            v-model="quote.lastname"
+            :class="invalidClass('lastname')"
+          />
+          <label for="lastname">Lastname</label>
+        </span>
+        <small class="p-error">{{ errorFor("lastname") }}</small>
       </div>
 
-      <div class="p-field p-mb-4">
-        <span class="p-float-label">
-          <InputText id="quote-lastname" v-model="quote.lastname" />
-          <label for="quote-lastname">Lastname</label>
-        </span>
-        <small v-if="submitted" class="p-error">{{
-          validationProvider.errorsFor("lastname")[0]
-        }}</small>
+      <div class="p-field p-col-12 p-md-12" :class="shakeClass('phone')">
+        <div class="p-inputgroup">
+          <Dropdown
+            v-model="selectedCountry"
+            :options="countries"
+            optionLabel="name"
+            :filter="true"
+            placeholder="Code"
+            class="dropdown"
+          >
+            <template #value="slotProps">
+              <div class="dropdown-item" v-if="slotProps.value">
+                <img
+                  :alt="slotProps.value.nativeName"
+                  :src="slotProps.value.flag"
+                />
+                <span>{{ slotProps.value.callingCodes[0] }}</span>
+              </div>
+              <span v-else>
+                {{ slotProps.placeholder }}
+              </span>
+            </template>
+            <template #option="slotProps">
+              <div class="dropdown-item dropdown-options">
+                <img
+                  :alt="slotProps.option.nativeName"
+                  :src="slotProps.option.flag"
+                />
+                <span>{{ slotProps.option.callingCodes[0] }}</span>
+              </div>
+            </template>
+          </Dropdown>
+          <span class="p-float-label">
+            <InputText
+              id="phone"
+              v-model="quote.phone"
+              :class="invalidClass('phone')"
+            />
+            <label for="phone">Phone</label>
+          </span>
+        </div>
+        <small class="p-error">{{ errorFor("phone") }}</small>
       </div>
 
-      <div class="p-field p-mb-4">
+      <div class="p-field p-col-12 p-md-12" :class="shakeClass('email')">
         <span class="p-float-label">
-          <InputText id="quote-phone" v-model="quote.phone" />
-          <label for="quote-phone">Phone</label>
+          <InputText
+            id="email"
+            v-model="quote.email"
+            :class="invalidClass('email')"
+          />
+          <label for="email">Email</label>
         </span>
-        <small v-if="submitted" class="p-error">{{
-          validationProvider.errorsFor("phone")[0]
-        }}</small>
+        <small class="p-error">{{ errorFor("email") }}</small>
       </div>
-
-      <div class="p-field">
-        <span class="p-float-label">
-          <InputText id="quote-email" v-model="quote.email" />
-          <label for="quote-email">Email</label>
-        </span>
-        <small v-if="submitted" class="p-error">{{
-          validationProvider.errorsFor("email")[0]
-        }}</small>
-      </div>
-
-      <div class="p-field p-mb-4">
+      <div class="p-field p-col-12 p-md-12" :class="shakeClass('quantity')">
         <span class="p-float-label">
           <InputNumber
-            id="quote-quantity"
+            id="quantity"
             v-model="quote.quantity"
             showButtons
             :min="1"
           />
-          <label for="quote-quantity">Quantity</label>
+          <label for="quantity">Quantity</label>
         </span>
-        <small v-if="submitted" class="p-error">{{
-          validationProvider.errorsFor("quantity")[0]
-        }}</small>
+        <small class="p-error">{{ errorFor("quantity") }}</small>
       </div>
 
-      <div class="p-field p-mb-4">
+      <div class="p-field p-col-12 p-md-12">
         <span class="p-float-label">
-          <Textarea
-            id="quote-message"
-            :autoResize="true"
-            v-model="quote.message"
-          />
-          <label for="quote-message">Optional Message</label>
+          <Textarea id="message" :autoResize="true" v-model="quote.message" />
+          <label for="message">Message</label>
         </span>
       </div>
     </div>
@@ -96,7 +129,11 @@ import InputNumber from "primevue/inputnumber";
 import Quote from "@/models/Quote";
 import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
+import Button from "primevue/button";
+import Dropdown from "primevue/dropdown";
 import ValidationProvider, { email, required } from "@/validation/validators";
+import CountriesService from "@/services/CountriesService";
+import Country from "@/models/Country";
 
 @Options({
   props: {
@@ -111,6 +148,8 @@ import ValidationProvider, { email, required } from "@/validation/validators";
     Quote,
     Textarea,
     Toast,
+    Button,
+    Dropdown,
   },
   emits: ["update:show"],
 })
@@ -120,6 +159,9 @@ export default class QuoteDialog extends Vue {
   productId?: number;
   itemNumber?: string;
   submitted = false;
+  shake = false;
+  countries?: Array<Country>;
+  selectedCountry: Country | null = null;
 
   validationProvider?: ValidationProvider<QuoteDialog>;
 
@@ -139,6 +181,10 @@ export default class QuoteDialog extends Vue {
     this.validationProvider.refreshValidation(this.quote);
   }
 
+  async mounted() {
+    this.countries = await CountriesService.getAll();
+  }
+
   get visible() {
     return this.show;
   }
@@ -152,6 +198,8 @@ export default class QuoteDialog extends Vue {
     this.submitted = true;
     if (this.validationProvider?.isValid()) {
       await this.send();
+    } else {
+      this.refreshShake();
     }
   }
   async send() {
@@ -180,8 +228,8 @@ export default class QuoteDialog extends Vue {
   showEmailFailed() {
     this.$toast.add({
       severity: "error",
-      summary: "Success Message error",
-      details: "MEsage detail error",
+      summary: "Success message error",
+      details: "Mesage detail error",
       life: 3000,
     });
   }
@@ -189,5 +237,48 @@ export default class QuoteDialog extends Vue {
   restForm() {
     this.quote = new Quote();
   }
+
+  errorFor(field: string) {
+    return this.submitted ? this.validationProvider?.errorsFor(field)[0] : "";
+  }
+
+  invalidClass(field: string) {
+    return this.submitted && !this.validationProvider?.isFieldValid(field)
+      ? "p-invalid"
+      : "";
+  }
+
+  refreshShake() {
+    this.shake = true;
+    setTimeout(() => {
+      this.shake = false;
+    }, 500);
+  }
+
+  shakeClass(field: string) {
+    return this.submitted &&
+      !this.validationProvider?.isFieldValid(field) &&
+      this.shake
+      ? "shake"
+      : "";
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.dropdown {
+  min-width: 30%;
+}
+.dropdown-item {
+  img {
+    width: 17px;
+    margin-right: 0.5rem;
+  }
+}
+
+// When i wrote this code, only me and God knows how it works.
+// Now only God knows how it works.
+.dropdown-options {
+  max-width: 0;
+}
+</style>

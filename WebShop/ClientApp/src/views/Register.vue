@@ -164,10 +164,8 @@ export default class Registration extends Vue {
     return this.submitted ? this.validationProvider?.errorsFor(field)[0] : "";
   }
   invalidClass(field: string) {
-    return this.submitted
-      ? this.validationProvider?.isFieldValid(field)
-        ? ""
-        : "p-invalid"
+    return this.submitted && !this.validationProvider?.isFieldValid(field)
+      ? "p-invalid"
       : "";
   }
 
@@ -182,7 +180,5 @@ export default class Registration extends Vue {
 </script>
 
 <style scoped>
-.shake {
-  animation: shake 0.5s;
-}
+
 </style>

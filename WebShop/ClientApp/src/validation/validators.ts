@@ -39,7 +39,7 @@ export default class ValidationProvider<T extends Vue> {
     }
 
     errorsFor(field: string): string[] {
-        return this.fields[field]
+        return this.fields[field] || []
     }
 
     isValid() {
@@ -52,7 +52,7 @@ export default class ValidationProvider<T extends Vue> {
     }
 
     isFieldValid(name: string) {
-        return this.fields[name].length < 1
+        return this.fields[name]?.length < 1
     }
 }
 

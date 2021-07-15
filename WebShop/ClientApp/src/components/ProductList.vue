@@ -1,65 +1,72 @@
 <template>
-  <DataView
-    :value="products"
-    :layout="layout"
-    :paginator="true"
-    :rows="9"
-    :sortOrder="sortOrder"
-    :sortField="sortField"
-  >
-    <template #header>
-      <div class="p-grid p-nogutter">
-        <div class="p-col-6" style="text-align: left">
-          <Dropdown
-            v-model="sortKey"
-            :options="sortOptions"
-            optionLabel="label"
-            placeholder="Sort By Price"
-            @change="onSortChange($event)"
-          />
-        </div>
-      </div>
-    </template>
-    <template #grid="slotProps">
-      <div class="p-col-12 p-md-3">
-        <div class="product-grid-item card">
-          <div class="product-grid-item-top">
-            <div>
-              <i class="pi pi-tag product-category-icon"></i>
-              <span class="product-category">{{
-                slotProps.data.category
-              }}</span>
+  <transition name="slide">
+    <div v-if="products">
+      <DataView
+        :value="products"
+        :layout="layout"
+        :paginator="true"
+        :rows="9"
+        :sortOrder="sortOrder"
+        :sortField="sortField"
+      >
+        <template #header>
+          <div class="p-grid p-nogutter">
+            <div class="p-col-6" style="text-align: left">
+              <Dropdown
+                v-model="sortKey"
+                :options="sortOptions"
+                optionLabel="label"
+                placeholder="Sort By Price"
+                @change="onSortChange($event)"
+              />
             </div>
           </div>
-          <div
-            class="product-grid-item-content"
-            @click="openProductDetails(slotProps.data.id)"
-          >
-            <img
-              :src="
-                slotProps.data.images?.find((i) => i.isMain)?.url ||
-                slotProps.data.images[0]?.url
-              "
-              :alt="slotProps.data.name"
-            />
-            <div class="product-name">{{ slotProps.data.name }}</div>
-            <div class="product-description">
-              {{ slotProps.data.description }}
+        </template>
+        <template #grid="slotProps">
+          <div class="p-col-12 p-md-3" :key="slotProps.data.id">
+            <div class="product-grid-item card">
+              <div class="product-grid-item-top">
+                <div>
+                  <i class="pi pi-tag product-category-icon"></i>
+                  <span class="product-category">{{
+                    slotProps.data.category
+                  }}</span>
+                </div>
+              </div>
+              <div
+                class="product-grid-item-content"
+                @click="openProductDetails(slotProps.data.id)"
+              >
+                <img
+                  :src="
+                    slotProps.data.images?.find((i) => i.isMain)?.url ||
+                    slotProps.data.images[0]?.url
+                  "
+                  :alt="slotProps.data.name"
+                />
+                <div class="product-name">{{ slotProps.data.name }}</div>
+                <div class="product-description">
+                  {{ slotProps.data.description }}
+                </div>
+              </div>
+              <div class="product-grid-item-bottom">
+                <span class="product-price"
+                  >${{ getLowestPrice(slotProps.data.prices) }}</span
+                >
+                <Button
+                  icon="pi pi-shopping-cart"
+                  :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
+                ></Button>
+              </div>
             </div>
           </div>
-          <div class="product-grid-item-bottom">
-            <span class="product-price"
-              >${{ getLowestPrice(slotProps.data.prices) }}</span
-            >
-            <Button
-              icon="pi pi-shopping-cart"
-              :disabled="slotProps.data.inventoryStatus === 'OUTOFSTOCK'"
-            ></Button>
-          </div>
-        </div>
-      </div>
-    </template>
-  </DataView>
+        </template>
+      </DataView>
+    </div>
+    <div v-else class="spinner-container">
+      <Spinner />
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -75,6 +82,7 @@ import Rating from "primevue/rating";
 import Galleria from "primevue/galleria";
 import router from "@/router";
 import PriceQuote from "@/models/PriceQuote";
+import Spinner from "primevue/progressspinner";
 
 @Options({
   components: {
@@ -85,11 +93,12 @@ import PriceQuote from "@/models/PriceQuote";
     DataViewLayoutOptions,
     Rating,
     Galleria,
+    Spinner,
   },
 })
 export default class ProductList extends Vue {
   productService?: ProductService;
-  products?: Product[] = new Array<Product>();
+  products?: Product[] | null = null;
   layout = "grid";
   sortKey = null;
   sortOrder: number | null = null;
@@ -238,6 +247,9 @@ export default class ProductList extends Vue {
     font-weight: 600;
   }
 }
+// .spinner-container {
+//   height: 50vh;
+// }
 
 @media screen and (max-width: 576px) {
   .product-list-item {

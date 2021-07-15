@@ -47,11 +47,9 @@ namespace WebShop.Controllers
                 };
                 await MailService.SendEmailAsync(mailResquest);
                 return true;
-
             }
             catch
             {
-
                 return false;
             }
         }

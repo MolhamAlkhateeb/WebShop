@@ -69,8 +69,8 @@ import AuthService from "@/services/AuthenticationService";
     Dialog,
     Button,
     InputText,
-    Password,
-  },
+    Password
+  }
 })
 export default class Login extends Vue {
   showDialog = false;
@@ -90,7 +90,7 @@ export default class Login extends Vue {
   async Login() {
     const loginResponse = await AuthService.Login({
       Password: this.password,
-      Email: this.email,
+      Email: this.email
     });
     if (loginResponse) {
       this.isSignedIn = true;

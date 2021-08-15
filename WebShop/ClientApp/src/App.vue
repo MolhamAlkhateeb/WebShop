@@ -16,8 +16,8 @@ import Navbar from "@/components/Navbar/NavBar.vue";
 @Options({
   components: {
     Footer,
-    Navbar,
-  },
+    Navbar
+  }
 })
 export default class App extends Vue {
   created() {

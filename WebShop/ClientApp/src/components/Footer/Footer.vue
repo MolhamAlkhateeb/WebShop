@@ -13,18 +13,28 @@
     </div>
 
     <div class="footer-accordion p-col-12">
-      <Accordion :multiple="true">
-        <AccordionTab header="ORDERS & SUPPORT">
-          <FooterItem title="" :items="ordersAndSupport" />
+      <Accordion>
+        <AccordionTab header="ORDERS &amp; SUPPORT">
+          <AccordionItem link="TODO">Shipping</AccordionItem>
+          <AccordionItem link="TODO">Return</AccordionItem>
+          <AccordionItem link="TODO">Contact us</AccordionItem>
         </AccordionTab>
-        <AccordionTab>
-          <template #header>
-            <span>ABOUT</span>
-          </template>
-          <FooterItem title="" :items="about" />
+        <AccordionTab header="ABOUT">
+          <AccordionItem link="TODO">Our story</AccordionItem>
+          <AccordionItem link="TODO">Transparency</AccordionItem>
+          <AccordionItem link="TODO">Corporates</AccordionItem>
+          <AccordionItem link="TODO">Become a reseller</AccordionItem>
+          <AccordionItem link="TODO">Whare to find us ?</AccordionItem>
         </AccordionTab>
         <AccordionTab header="FOLLOW US">
-          <FooterItem title="" :items="followUs" />
+          <AccordionItem link="TODO">
+            <FacebookIcon class="some-icon" />
+            Facebook
+          </AccordionItem>
+          <AccordionItem link="TODO">
+            <TwitterIcon class="some-icon" />
+            Twitter
+          </AccordionItem>
         </AccordionTab>
       </Accordion>
     </div>
@@ -35,13 +45,15 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import FooterBaner from "@/components/Footer/FooterBaner.vue";
 import FooterItem from "@/components/Footer/FooterItem.vue";
-import Accordion from "primevue/accordion";
-import AccordionTab from "primevue/accordiontab";
+import Accordion from "@/components/Custom/Accordion/Accordion.vue";
+import AccordionTab from "@/components/Custom/Accordion/AccordionTab.vue";
+import AccordionItem from "@/components/Custom/Accordion/AccordionItem.vue";
+import FacebookIcon from "@/components/SVG/FacebookLogo.vue";
+import TwitterIcon from "@/components/SVG/TwitterLogo.vue";
 
 @Options({
   components: {
@@ -49,30 +61,38 @@ import AccordionTab from "primevue/accordiontab";
     FooterItem,
     Accordion,
     AccordionTab,
-  },
+    AccordionItem,
+    FacebookIcon,
+    TwitterIcon
+  }
 })
 export default class Footer extends Vue {
   ordersAndSupport = [
     { link: "/", text: "Shipping" },
     { link: "/", text: "Returns" },
-    { link: "/", text: "Contact us" },
+    { link: "/", text: "Contact us" }
   ];
   about = [
     { link: "/", text: "Our story" },
     { link: "/", text: "Transparency" },
     { link: "/", text: "Corporates" },
     { link: "/", text: "Become a reseller" },
-    { link: "/", text: "Where to find us?" },
+    { link: "/", text: "Where to find us?" }
   ];
   followUs = [
     // { link: "/", text: "Instagram", icon: "pi-instagram" },
     { link: "/", text: "Facebook", icon: "pi-facebook" },
-    { link: "/", text: "Twitter", icon: "pi-twitter" },
+    { link: "/", text: "Twitter", icon: "pi-twitter" }
   ];
 }
 </script>
 
 <style lang="scss" scoped>
+.some-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: -3px;
+}
 .footer {
   background-color: var(--var-main-color);
   color: var(--var-secondary-color);

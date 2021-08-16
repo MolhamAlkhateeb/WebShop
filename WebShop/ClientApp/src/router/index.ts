@@ -5,6 +5,7 @@ import ContactUs from "../views/ContactUs.vue";
 import PrivacyAndPolicy from "@/views/PrivacyPolicy.vue";
 import TermsAndConditions from "@/views/TermsAndConditions.vue";
 import Register from "@/views/Register.vue"
+import Login from "@/views/Login.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "ProductDetails",
     component: ProductDetails,
     props: route => ({ id: Number(route.params.id) })
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
   },
   {
     path: "/contact-us",

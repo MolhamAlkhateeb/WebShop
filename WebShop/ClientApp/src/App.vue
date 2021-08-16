@@ -1,5 +1,10 @@
 <template>
-  <Navbar />
+  <Navbar class="navbar-normal" />
+  <HamburgerNavBar class="navbar-ham">
+    <HamburgerMenuItem link="/login">Login</HamburgerMenuItem>
+    <HamburgerMenuItem link="/">Home</HamburgerMenuItem>
+    <HamburgerMenuItem link="/about">About</HamburgerMenuItem>
+  </HamburgerNavBar>
   <router-view v-slot="{ Component }">
     <transition name="slide" mode="out-in">
       <component :is="Component"></component>
@@ -12,11 +17,17 @@
 import { Options, Vue } from "vue-class-component";
 import Footer from "@/components/Footer/Footer.vue";
 import Navbar from "@/components/Navbar/NavBar.vue";
+import HamburgerNavBar from "@/components/Custom/HamburgerNavBar/HamburgerNavBar.vue";
+import HamburgerMenuItem from "@/components/Custom/HamburgerNavBar/HamburgerMenuItem.vue";
+import Login from "@/components/Login.vue";
 
 @Options({
   components: {
     Footer,
-    Navbar
+    Navbar,
+    HamburgerNavBar,
+    HamburgerMenuItem,
+    Login
   }
 })
 export default class App extends Vue {
@@ -38,13 +49,10 @@ export default class App extends Vue {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 body {
-  margin-top: calc(
-    var(--navbar-height) + var(--navbar-padding-vertical) +
-      var(--navbar-padding-vertical)
-  );
+  margin-top: 0;
 }
 
 .block {
@@ -173,6 +181,18 @@ body {
   }
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+.navbar-ham {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  .navbar-normal {
+    display: none !important;
+  }
+  .navbar-ham {
+    display: block;
   }
 }
 </style>

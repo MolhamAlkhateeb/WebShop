@@ -24,10 +24,6 @@
             <h4>{{ price.price }} {{ price.currency }}</h4>
           </div>
         </div>
-        <div class="row">
-          <div class="btn" @click="getQuoteClick">GET A QUOTE</div>
-          <div class="btn">ORDER A SAMPLE</div>
-        </div>
       </div>
     </div>
     <div class="p-col-12">
@@ -46,12 +42,6 @@
     </div>
 
     <PriceBar :product="product" />
-
-    <QuoteDialog
-      v-model:show="showGetQuoteDialog"
-      :itemNumber="product.itemNumber"
-      :productId="product.id"
-    />
   </div>
   <div v-else class="spinner-container">
     <Spinner />
@@ -73,7 +63,6 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Textarea from "primevue/textarea";
 import Spinner from "primevue/progressspinner";
-import QuoteDialog from "@/views/ProductDetails/QuoteDialog.vue";
 import PriceBar from "@/components/PriceBar/PriceBar.vue";
 
 @Options({
@@ -90,14 +79,12 @@ import PriceBar from "@/components/PriceBar/PriceBar.vue";
     InputText,
     InputNumber,
     Textarea,
-    QuoteDialog,
     Spinner,
     PriceBar,
   },
 })
 export default class ProductDetails extends Vue {
   product: Product | null = null;
-  showGetQuoteDialog = false;
   id = 0;
 
   created() {
@@ -114,10 +101,6 @@ export default class ProductDetails extends Vue {
   async getProduct() {
     const response = await axios.get(`/api/products/${this.id}`);
     return response.data;
-  }
-
-  getQuoteClick() {
-    this.showGetQuoteDialog = true;
   }
 }
 </script>

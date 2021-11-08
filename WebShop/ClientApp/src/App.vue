@@ -73,7 +73,6 @@ body {
   color: var(--var-main-color);
   border: 0.125em solid var(--var-main-color);
   padding: 0.25em 1em;
-  border-radius: 0.25em;
   text-align: center;
   transition: color 0.1s linear, border-color 0.2s linear,
     background-color 0.2s linear;
@@ -90,7 +89,6 @@ body {
   color: var(--var-secondary-color);
   border: 0.125em solid var(--var-secondary-color);
   padding: 0.25em 1em;
-  border-radius: 0.25em;
   transition: color 0.1s linear, border-color 0.2s linear,
     background-color 0.2s linear;
 }
@@ -135,6 +133,35 @@ body {
   transition: all 0.2s ease;
 }
 
+.fade-leave-to,
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-leave-active,
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
+
+.slide-y-enter-active {
+  transition: all 0.3s ease-in;
+}
+
+.slide-y-leave-active {
+  transition: all 0.3s cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slide-y-enter-to,
+.slide-y-leave-from {
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.slide-y-enter-from,
+.slide-y-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}
 @font-face {
   font-family: "dwells-medium";
   src: url("assets/fonts/dwells-medium.woff2") format("woff2");

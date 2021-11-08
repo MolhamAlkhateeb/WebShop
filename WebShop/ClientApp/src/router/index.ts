@@ -5,6 +5,10 @@ import ContactUs from "../views/ContactUs.vue";
 import PrivacyAndPolicy from "@/views/PrivacyPolicy.vue";
 import TermsAndConditions from "@/views/TermsAndConditions.vue";
 import Register from "@/views/Register.vue"
+import Login from "@/components/api-authorization/Login.vue"
+import { ApplicationPaths, LoginActions, LogoutActions } from "@/components/api-authorization/ApiAuthorizationConstants";
+
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,7 +50,18 @@ const routes: Array<RouteRecordRaw> = [
     path: "/register",
     name: "Register",
     component: Register
-  }
+  }, 
+  { path:ApplicationPaths.Login , component: Login, props: route => ({action: LoginActions.Login})},
+  { path:ApplicationPaths.LoginFailed , component: Login, props: route => ({action: LoginActions.LoginFailed})},
+  { path:ApplicationPaths.LoginCallback , component: Login, props: route => ({action: LoginActions.LoginCallback})},
+  { path:ApplicationPaths.Profile , component: Login, props: route => ({action: LoginActions.Profile})},
+  { path:ApplicationPaths.Register , component: Login, props: route => ({action: LoginActions.Register})},
+  { path:ApplicationPaths.LogOut , component: Login, props: route => ({action: LogoutActions.Logout})},
+  { path:ApplicationPaths.LogOutCallback , component: Login, props: route => ({action: LogoutActions.LogoutCallback})},
+  { path:ApplicationPaths.LoggedOut , component: Login, props: route => ({action: LogoutActions.LoggedOut})},
+  
+
+  
 ];
 
 const router = createRouter({

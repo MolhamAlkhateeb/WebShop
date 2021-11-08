@@ -35,8 +35,8 @@ namespace WebShop.Controllers
             {
                 Email = registerDto.Email,
                 UserName = registerDto.Email,
-                Firstname = registerDto.Firstname,
-                Lastname = registerDto.Lastname
+                //Firstname = registerDto.Firstname,
+                //Lastname = registerDto.Lastname
             };
 
             var userExists = await userManager.FindByEmailAsync(registerDto.Email);
@@ -53,7 +53,7 @@ namespace WebShop.Controllers
             var roles = new List<string>();
             var token = authService.GenerateToken(user, roles);
             var refreshToken = authService.GenerateRefreshToken(token);
-            user.RefreshToken = refreshToken;
+            //user.RefreshToken = refreshToken;
             var isUpdated = await userManager.UpdateAsync(user);
             if (!isUpdated.Succeeded)
             {

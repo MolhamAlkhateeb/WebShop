@@ -6,5 +6,6 @@ export default class Quote {
     phone?: string;
     firstname?: string;
     lastname?: string;
-    message?: string
+    message?: string;
+    countryCode?: number;
 }

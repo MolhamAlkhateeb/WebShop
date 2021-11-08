@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -41,14 +41,14 @@ namespace WebShop
         {
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
-            services.AddRazorPages();
+            //services.AddRazorPages();
 
-            services.Configure<RazorPagesOptions>(options => options.RootDirectory = "/");
-            services.Configure<RazorViewEngineOptions>(o =>
-            {
-                o.ViewLocationFormats.Clear();
-                o.ViewLocationFormats.Add("/");
-            });
+            //services.Configure<RazorPagesOptions>(options => options.RootDirectory = "/");
+            //services.Configure<RazorViewEngineOptions>(o =>
+            //{
+            //    o.ViewLocationFormats.Clear();
+            //    o.ViewLocationFormats.Add("/");
+            //});
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
 
@@ -56,40 +56,20 @@ namespace WebShop
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //authentication
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-          .AddJwtBearer(options =>
-          {
-              var secretKey = Encoding.UTF8.GetBytes(Configuration["JwtConfig:SecretKey"]);
-              options.SaveToken = true;
-              options.TokenValidationParameters = new TokenValidationParameters
-              {
-                  ValidateIssuerSigningKey = true,
-                  IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-                  ValidateIssuer = false,
-                  ValidateAudience = false,
-                  RequireExpirationTime = false,
-                  ValidateLifetime = true,
-                  ValidAlgorithms = new[] { "HS512" }
-              };
-          });
-            //JWT Config
-            JwtConfig jwtConfig = new();
-            Configuration.GetSection("JwtConfig").Bind(jwtConfig);
-            services.AddSingleton(jwtConfig);
-            //Authentication Service
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+
 
             services.AddHttpClient<ERPAuthService>();
             services.AddTransient<ERPAuthHandler>();
@@ -108,8 +88,6 @@ namespace WebShop
                 //options.Password.RequiredUniqueChars = 1;
             });
 
-
-            services.AddControllers();
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -122,16 +100,24 @@ namespace WebShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
             }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
-            app.UseSpaStaticFiles();
+
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
             app.UseSpa(spa =>

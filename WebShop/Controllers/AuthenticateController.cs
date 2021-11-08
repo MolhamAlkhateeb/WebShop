@@ -44,9 +44,9 @@ namespace WebShop.Controllers
             }
             var token = authService.GenerateToken(user, userRoles);
             var refreshToken = authService.GenerateRefreshToken(token);
-            var oldRefreshtoken = context.RefreshTokens.FirstOrDefault(r => r.UserId == user.Id);
-            context.RefreshTokens.Remove(oldRefreshtoken);
-            user.RefreshToken = refreshToken;
+            //var oldRefreshtoken = context.RefreshTokens.FirstOrDefault(r => r.UserId == user.Id);
+            //context.RefreshTokens.Remove(oldRefreshtoken);
+            //user.RefreshToken = refreshToken;
             var isUpdated = await userManager.UpdateAsync(user);
             if (!isUpdated.Succeeded)
             {
@@ -57,8 +57,8 @@ namespace WebShop.Controllers
 
             var response = new LoginResponse()
             {
-                Firstname = user.Firstname,
-                Lastname = user.Lastname,
+                //Firstname = user.Firstname,
+                //Lastname = user.Lastname,
                 Email = user.Email,
                 Tokens = new TokenWithRefresh()
                 {
@@ -80,9 +80,10 @@ namespace WebShop.Controllers
             var jti = principal.Claims.SingleOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
             var user = await userManager.FindByIdAsync(userId);
             var userRoles = await userManager.GetRolesAsync(user);
-            var isValid = (tokens.RefreshToken == user.RefreshToken.Token) &&
-                (!user.RefreshToken.IsRevoked) &&
-                (!user.RefreshToken.IsExpired);
+            var isValid = true;
+            //(tokens.RefreshToken == user.RefreshToken.Token) &&
+            //    (!user.RefreshToken.IsRevoked) &&
+            //    (!user.RefreshToken.IsExpired);
             //&&(user.RefreshToken.Jti == jti);
             if (!isValid)
             {

@@ -44,6 +44,9 @@
         </TabPanel>
       </TabView>
     </div>
+
+    <PriceBar :product="product" />
+
     <QuoteDialog
       v-model:show="showGetQuoteDialog"
       :itemNumber="product.itemNumber"
@@ -71,6 +74,7 @@ import InputNumber from "primevue/inputnumber";
 import Textarea from "primevue/textarea";
 import Spinner from "primevue/progressspinner";
 import QuoteDialog from "@/views/ProductDetails/QuoteDialog.vue";
+import PriceBar from "@/components/PriceBar/PriceBar.vue";
 
 @Options({
   props: {
@@ -88,6 +92,7 @@ import QuoteDialog from "@/views/ProductDetails/QuoteDialog.vue";
     Textarea,
     QuoteDialog,
     Spinner,
+    PriceBar,
   },
 })
 export default class ProductDetails extends Vue {

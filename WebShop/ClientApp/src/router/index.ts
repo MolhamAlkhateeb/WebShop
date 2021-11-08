@@ -8,8 +8,6 @@ import Register from "@/views/Register.vue"
 import Login from "@/components/api-authorization/Login.vue"
 import { ApplicationPaths, LoginActions, LogoutActions } from "@/components/api-authorization/ApiAuthorizationConstants";
 
-
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -30,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "ProductDetails",
     component: ProductDetails,
     props: route => ({ id: Number(route.params.id) })
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
   },
   {
     path: "/contact-us",

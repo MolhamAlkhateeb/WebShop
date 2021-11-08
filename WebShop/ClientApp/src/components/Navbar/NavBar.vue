@@ -20,35 +20,32 @@ import MenuItem from "@/components/Navbar/MenuItem.vue";
 
 @Options({
   props: {
-    title: String,
+    title: String
   },
   components: {
     MenuItem,
-    Login,
-  },
+    Login
+  }
 })
 export default class Navbar extends Vue {
-  offsetTop = 0;
-
-  mounted() {
-    this.offsetTop = this.$el.offsetTop;
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  deactivated() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
-  handleScroll() {
-    if (window.pageYOffset >= this.offsetTop) {
-      this.$el.classList.add("sticky");
-    } else {
-      this.$el.classList.remove("sticky");
-    }
-  }
+  // offsetTop = 0;
+  // mounted() {
+  //   this.offsetTop = this.$el.offsetTop;
+  //   window.addEventListener("scroll", this.handleScroll);
+  // }
+  // deactivated() {
+  //   window.removeEventListener("scroll", this.handleScroll);
+  // }
+  // handleScroll() {
+  //   if (window.pageYOffset >= this.offsetTop) {
+  //     this.$el.classList.add("sticky");
+  //   } else {
+  //     this.$el.classList.remove("sticky");
+  //   }
+  // }
 }
-</script> 
-<style scoped>
+</script>
+<style scoped lang="scss">
 #nav {
   padding: var(--navbar-padding-vertical);
   height: calc(
@@ -58,10 +55,10 @@ export default class Navbar extends Vue {
   background-color: var(--var-main-color);
   display: flex;
   justify-content: center;
-  position: fixed;
+  position: sticky; // sticky cannot work with a parent with overflow hidden
   top: 0;
   z-index: 10;
-  width: calc(100% - 16px);
+  width: 100%;
 }
 
 .menu-items {

@@ -8,14 +8,13 @@
   </ul>
 </template>
 
-
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 @Options({
   props: {
     title: String,
-    items: Array,
-  },
+    items: Array
+  }
 })
 export default class FooterItem extends Vue {
   title = "";
